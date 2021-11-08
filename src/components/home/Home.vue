@@ -3,8 +3,10 @@
     <!-- 头部 -->
     <el-header>
       <div class="header-img">
-        <img src="~assets/images/logo.png" alt="" />
+        <img src="~assets/images/logo.png" alt="" @click="headerClick" />
         <span>后台管理系统</span>
+        <el-button type="primary" size="mini" icon="el-icon-arrow-left" @click="backClick"></el-button>
+        <el-button type="primary" size="mini" icon="el-icon-arrow-right" @click="goClick"></el-button>
       </div>
       <el-button type="info" size="medium" @click="logoutClick">退出</el-button>
     </el-header>
@@ -21,6 +23,7 @@
           :collapse="isToggle"
           :collapse-transition="false"
           router
+          :default-active= "isActive"
         >
           <!-- 一级菜单 -->
           <el-sub-menu
@@ -47,7 +50,9 @@
       </el-aside>
 
       <!-- main -->
-      <el-main>Main</el-main>
+      <el-main>
+        <router-view/>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -61,10 +66,23 @@ export default {
     return {
       menuList: [],
       icon: ['el-icon-user-solid', 'el-icon-connection', 'el-icon-goods', 'el-icon-s-order', 'el-icon-data-line'],
-      isToggle: false
+      isToggle: false,
+      isActive: "/users"
     };
   },
   methods: {
+    // 点击头像回到首页
+    headerClick() {
+      this.$router.push('/users')
+    },
+    backClick() {
+      this.$router.back()
+      this.isActive = this.$route.path
+    },
+    goClick() {
+      this.$router.go(1)
+      this.isActive = this.$route.path
+    },
     // 退出事件
     logoutClick() {
       window.sessionStorage.clear();
@@ -78,7 +96,7 @@ export default {
   created() {
     // 请求菜单列表数据
     getMenuList().then((res) => {
-      console.log(res);
+      // console.log(res);
       if (res.data.meta.status !== 200)
         return this.$message.error(res.data.meta.msg);
       this.menuList = res.data.data;
@@ -97,7 +115,7 @@ export default {
     align-items: center;
     background-color: #242424;
     color: #fff;
-    font-weight: 700;
+    font-weight: 500;
     .header-img {
       display: flex;
       align-items: center;
@@ -110,6 +128,10 @@ export default {
         padding: 5px;
         margin-right: 10px;
         box-shadow: 0 0 5px #ddd;
+      }
+      .el-button {
+        margin-left: 20px;
+        font-size: 19px;
       }
     }
   }

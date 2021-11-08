@@ -18,7 +18,8 @@
             autocomplete="off"
             placeholder="请输入用户名"
             prefix-icon="el-icon-user"
-          />
+            clearable
+          ></el-input>
         </el-form-item>
 
         <el-form-item prop="password">
@@ -28,7 +29,9 @@
             autocomplete="off"
             placeholder="请输入密码"
             prefix-icon="el-icon-lock"
-          />
+            clearable
+            @keyup.enter="submitForm('loginForm')"
+          ></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -148,10 +151,11 @@ export default {
   background-color: #344a5f;
   user-select: none;
   .login-wrapper {
-    width: 350px;
+    width: 420px;
     height: 280px;
     background-color: #fff;
     position: relative;
+    border-radius: 5px;
     .login-img {
       width: 100px;
       height: 100px;
