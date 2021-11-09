@@ -8,7 +8,7 @@
         <el-button type="primary" size="mini" icon="el-icon-arrow-left" @click="backClick"></el-button>
         <el-button type="primary" size="mini" icon="el-icon-arrow-right" @click="goClick"></el-button>
       </div>
-      <el-button type="info" size="medium" @click="logoutClick">退出</el-button>
+      <el-button type="danger" size="medium" @click="logoutClick">退出</el-button>
     </el-header>
 
     <el-container>
@@ -85,8 +85,17 @@ export default {
     },
     // 退出事件
     logoutClick() {
-      window.sessionStorage.clear();
-      this.$router.push("/login");
+      this.$confirm(
+        '真的要走了吗 ？',
+        {
+          confirmButtonText: '狠心离开',
+          cancelButtonText: '再留一会',
+          type: 'warning',
+        }
+      ).then(() => {
+        window.sessionStorage.clear();
+        this.$router.push("/login");
+      }).catch(() => {})
     },
     // 折叠菜单栏
     toggleClick() {

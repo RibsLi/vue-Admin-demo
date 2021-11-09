@@ -323,8 +323,7 @@ export default {
     // 监听删除用户事件
     removeClick(id) {
       this.$confirm(
-        '是否删除此用户?',
-        '警告',
+        '确认删除此用户吗 ？',
         {
           confirmButtonText: '确认',
           cancelButtonText: '取消',
