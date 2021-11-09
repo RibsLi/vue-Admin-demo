@@ -24,9 +24,9 @@ export function getUsersList(query, pagenum, pagesize) {
 // 请求用户状态的修改
 export function getStateChange(uid, type) {
   return request({
-    url: "users/:uId/state/:type",
+    url: "users/uid/state/type",
     method: "put",
-    params: {
+    data: {
       uid,
       type
     }
@@ -38,7 +38,7 @@ export function addUser(username, password, email, mobile) {
   return request({
     url: "users",
     method: "post",
-    params: {
+    data: {
       username, 
       password, 
       email, 

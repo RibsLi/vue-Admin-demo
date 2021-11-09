@@ -27,14 +27,14 @@
         <el-table-column prop="username" label="姓名" header-align="center" />
         <el-table-column prop="email" label="邮箱" header-align="center" />
         <el-table-column prop="mobile" label="电话" header-align="center" />
-        <el-table-column prop="role_name" label="角色" header-align="center" />
-        <el-table-column prop="mg_state" label="状态" header-align="center">
+        <el-table-column prop="role_name" label="角色" header-align="center" sortable />
+        <el-table-column prop="mg_state" label="状态" header-align="center" sortable>
           <template v-slot:default="state">
             <el-switch v-model="state.row.mg_state" @change="stateChange(state.row)" />
             <!-- {{state.row}} -->
           </template>
         </el-table-column>
-        <el-table-column label="操作" header-align="center">
+        <el-table-column label="操作" header-align="center" width="173px">
           <template v-slot:default="">
             <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
             <el-button type="danger" icon="el-icon-delete" size="small"></el-button>
@@ -54,7 +54,7 @@
       <!-- 分页 -->
       <el-pagination
         v-model:currentPage="pagenum"
-        :page-sizes="[5, 10, 15, 20]"
+        :page-sizes="[10, 15, 20, 25]"
         :page-size="pagesize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -137,7 +137,7 @@ export default {
     return {
       query: '',
       pagenum: 1,
-      pagesize: 5,
+      pagesize: 10,
       usersList: [],
       total: 0,
       dialogVisible: false,
@@ -209,11 +209,12 @@ export default {
     // 监听用户状态改变
     stateChange(userInfo) {
       getStateChange(userInfo.id, userInfo.mg_state).then(res => {
-        // console.log(res);
+        console.log(res);
         if(res.data.meta.status !== 200) {
-          // userInfo.mg_state = !userInfo.mg_state
+          userInfo.mg_state = !userInfo.mg_state
           return this.$message.error('更新用户状态失败')
         }
+        this.$message.success('更新用户状态成功!')
       })
     },
     // 添加用户对话框的重置事件
@@ -225,12 +226,12 @@ export default {
       this.$refs.addForm.validate((valid) => {
         if (valid) {
           addUser(this.addForm.username, this.addForm.password, this.addForm.email, this.addForm.mobile).then(res => {
-            console.log(res);
+            // console.log(res);
             if (res.data.meta.status !== 201) {
               return this.$message.error('用户添加失败')
             }
             this.dialogVisible = false
-            // 添加成后重新获取用户数据,不需要用户手动刷新
+            // 添加成功后重新获取用户数据
             this.getUsersList()
             return this.$message.success('用户添加成功')
           })

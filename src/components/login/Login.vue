@@ -111,8 +111,17 @@ export default {
             (res) => {
               // console.log(res);
               const status = res.data.meta.status;
-              if (status !== 200) return this.$message.error("登陆失败");
-              this.$message.success("登陆成功");
+              if (status !== 200) return this.$message({
+                message: "登陆失败",
+                type: "error",
+                duration: 1000
+              });;
+              // this.$message.success("登陆成功");
+              this.$message({
+                message: "登陆成功",
+                type: "success",
+                duration: 1000
+              });
 
               // 保存token到window.sessionStorage中
               window.sessionStorage.setItem("token", res.data.data.token);
@@ -148,18 +157,19 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #344a5f;
+  background: linear-gradient(to top, #d0b691, #8b9ead);
   user-select: none;
   .login-wrapper {
-    width: 420px;
-    height: 280px;
+    width: 450px;
+    height: 300px;
     background-color: #fff;
     position: relative;
     border-radius: 5px;
+    box-shadow: 0 0 10px #000;
     .login-img {
-      width: 100px;
-      height: 100px;
-      padding: 10px;
+      width: 120px;
+      height: 120px;
+      padding: 8px;
       border-radius: 50%;
       border: 1px solid #ccc;
       background-color: #fff;
