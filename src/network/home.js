@@ -22,14 +22,15 @@ export function getUsersList(query, pagenum, pagesize) {
 }
 
 // 请求用户状态的修改
-export function getStateChange(uid, type) {
+export function getStateChange(userInfo) {
   return request({
-    url: "users/uid/state/type",
+    // url: "users/:uid/state/:type",
+    url: `users/${userInfo.id}/state/${userInfo.mg_state}`,
     method: "put",
-    data: {
-      uid,
-      type
-    }
+    // data: {
+    //   uid,
+    //   type
+    // }
   })
 }
 

@@ -208,8 +208,8 @@ export default {
     },
     // 监听用户状态改变
     stateChange(userInfo) {
-      getStateChange(userInfo.id, userInfo.mg_state).then(res => {
-        console.log(res);
+      getStateChange(userInfo).then(res => {
+        // console.log(res);
         if(res.data.meta.status !== 200) {
           userInfo.mg_state = !userInfo.mg_state
           return this.$message.error('更新用户状态失败')

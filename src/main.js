@@ -10,6 +10,11 @@ import "assets/css/main.css";
 
 // import axios from "axios"
 // axios.defaults.baseURL = "https://lianghj.top:8888/api/private/v1/"
+// 请求拦截获取token
+// axios.interceptors.request.use(config => {
+//   config.headers.Authorization = window.sessionStorage.getItem('token')
+//   return config 
+// })
 
 const app = createApp(App);
 //vue3注册原型的方法
