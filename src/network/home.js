@@ -47,3 +47,23 @@ export function addUser(username, password, email, mobile) {
     }
   })
 }
+
+// 根据id获取用户信息
+export function getUserInfo(id) {
+  return request({
+    url: `users/${id}`,
+    method: "get"
+  })
+}
+
+// 修改用户信息
+export function setUserInfo(id, email, mobile) {
+  return request({
+    url: `users/${id}`,
+    method: "put",
+    data: {
+      email, 
+      mobile
+    }
+  })
+}

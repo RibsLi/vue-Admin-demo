@@ -18,11 +18,11 @@
           </el-input>
         </el-col>
         <el-col :span="2">
-          <el-button type="primary" @click="dialogVisible=true">添加用户</el-button>
+          <el-button type="primary" @click="addUserDialog=true">添加用户</el-button>
         </el-col>
       </el-row>
       <!-- 列表信息 -->
-      <el-table :data="usersList" border height="71vh" highlight-current-row style="width: 100%">
+      <el-table :data="usersList" border height="69.7vh" highlight-current-row style="width: 100%">
         <el-table-column type="index" label="序号" header-align="center" align="center" />
         <el-table-column prop="username" label="姓名" header-align="center" />
         <el-table-column prop="email" label="邮箱" header-align="center" />
@@ -35,9 +35,11 @@
           </template>
         </el-table-column>
         <el-table-column label="操作" header-align="center" width="173px">
-          <template v-slot:default="">
-            <el-button type="primary" icon="el-icon-edit" size="small"></el-button>
+          <template v-slot:default="handle">
+            <el-button type="primary" icon="el-icon-edit" size="small" @click="editClick(handle.row.id)"></el-button>
+
             <el-button type="danger" icon="el-icon-delete" size="small"></el-button>
+
             <el-button type="warning" icon="el-icon-setting" size="small"></el-button>
             <!-- 设置按钮提示信息 -->
             <!-- <el-tooltip
@@ -66,9 +68,10 @@
 
     <!-- 添加用户对话框 -->
     <el-dialog
-      v-model="dialogVisible"
+      v-model="addUserDialog"
       title="添加新用户"
       width="50%"
+      :close-on-click-modal="false"
       @close="resetAddForm"
     >
     <!-- 对话框内容 -->
@@ -95,7 +98,7 @@
       <!-- 对话框底部按钮 -->
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button @click="addUserDialog = false">取消</el-button>
           <el-button type="primary" @click="submitAddForm"
             >确认</el-button
           >
@@ -105,11 +108,51 @@
         </span>
       </template>
     </el-dialog>
+
+    <!-- 用户编辑对话框 -->
+    <el-dialog
+      v-model="editDialog"
+      title="修改用户信息"
+      width="50%"
+      :close-on-click-modal="false"
+      @close="resetEditForm"
+    >
+    <!-- 对话框内容 -->
+      <el-form
+        ref="editForm"
+        :model="editForm"
+        :rules="rules"
+        label-width="70px"
+        status-icon
+      >
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="editForm.username" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="editForm.email"></el-input>
+        </el-form-item>
+        <el-form-item label="手机" prop="mobile">
+          <el-input v-model="editForm.mobile"></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- 对话框底部按钮 -->
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="editDialog = false">取消</el-button>
+          <el-button type="primary" @click="submitEditForm"
+            >确认</el-button
+          >
+          <el-button type="warning" @click="resetEditForm">
+            重置
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getUsersList, getStateChange, addUser } from "network/home"
+import { getUsersList, getStateChange, addUser, getUserInfo, setUserInfo } from "network/home"
 
 export default {
   name: "Users",
@@ -140,13 +183,15 @@ export default {
       pagesize: 10,
       usersList: [],
       total: 0,
-      dialogVisible: false,
+      addUserDialog: false,
       addForm: {
         username: "",
         password: "",
         email: "",
         mobile: ""
       },
+      editDialog: false,
+      editForm: {},
       rules: {
         username: [
           {
@@ -190,7 +235,7 @@ export default {
     // 请求用户列表数据
     getUsersList() {
       getUsersList(this.query, this.pagenum, this.pagesize).then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.data.meta.status !== 200) return this.$message.error(res.data.meta.msg)
         this.usersList = res.data.data.users
         this.total = res.data.data.total
@@ -206,7 +251,7 @@ export default {
       this.pagenum = newPage
       this.getUsersList()
     },
-    // 监听用户状态改变
+    // 监听用户状态的改变
     stateChange(userInfo) {
       getStateChange(userInfo).then(res => {
         // console.log(res);
@@ -230,16 +275,49 @@ export default {
             if (res.data.meta.status !== 201) {
               return this.$message.error('用户添加失败')
             }
-            this.dialogVisible = false
+            this.addUserDialog = false
             // 添加成功后重新获取用户数据
             this.getUsersList()
-            return this.$message.success('用户添加成功')
+            this.$message.success('用户添加成功')
           })
         } else {
           console.log("error submit!!");
           return false;
         }
       })
+    },
+    // 监听用户编辑按钮的事件
+    editClick(id) {
+      getUserInfo(id).then(res => {
+        console.log(res);
+        if (res.data.meta.status !== 200) return this.$message.error("获取用户信息失败")
+        this.editForm = res.data.data
+        this.editDialog = true
+      })
+    },
+    // 监听用户编辑提交的事件
+    submitEditForm() {
+      this.$refs.editForm.validate((valid) => {
+        if (valid) {
+          setUserInfo(this.editForm.id, this.editForm.email, this.editForm.mobile).then(res => {
+            console.log(res);
+            if (res.data.meta.status !== 200) {
+              return this.$message.error('修改用户信息失败')
+            }
+            this.editDialog = false
+            // 添加成功后重新获取用户数据
+            this.getUsersList()
+            this.$message.success('修改用户信息成功')
+          })
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      })
+    },
+    // 监听用户编辑重置事件
+    resetEditForm() {
+      this.$refs.editForm.resetFields();
     }
   },
 };
