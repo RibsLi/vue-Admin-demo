@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { getMenuList } from "network/home";
+import { getMenuList } from "network/users";
 
 export default {
   name: "Home",

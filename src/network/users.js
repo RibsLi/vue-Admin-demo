@@ -67,3 +67,14 @@ export function setUserInfo(id, email, mobile) {
     }
   })
 }
+
+// 删除用户请求
+export function deleteUser(id) {
+  return request({
+    url: `users/${id}`,
+    method: "delete",
+    params: {
+      id
+    }
+  })
+}

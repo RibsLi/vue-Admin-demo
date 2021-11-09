@@ -36,10 +36,11 @@
         </el-table-column>
         <el-table-column label="操作" header-align="center" width="173px">
           <template v-slot:default="handle">
+            <!-- 编辑按钮 -->
             <el-button type="primary" icon="el-icon-edit" size="small" @click="editClick(handle.row.id)"></el-button>
-
-            <el-button type="danger" icon="el-icon-delete" size="small"></el-button>
-
+            <!-- 删除按钮 -->
+            <el-button type="danger" icon="el-icon-delete" size="small" @click="removeClick(handle.row.id)"></el-button>
+            <!-- 分配角色按钮 -->
             <el-button type="warning" icon="el-icon-setting" size="small"></el-button>
             <!-- 设置按钮提示信息 -->
             <!-- <el-tooltip
@@ -152,7 +153,7 @@
 </template>
 
 <script>
-import { getUsersList, getStateChange, addUser, getUserInfo, setUserInfo } from "network/home"
+import { getUsersList, getStateChange, addUser, getUserInfo, setUserInfo, deleteUser } from "network/users"
 
 export default {
   name: "Users",
@@ -318,6 +319,25 @@ export default {
     // 监听用户编辑重置事件
     resetEditForm() {
       this.$refs.editForm.resetFields();
+    },
+    // 监听删除用户事件
+    removeClick(id) {
+      this.$confirm(
+        '是否删除此用户?',
+        '警告',
+        {
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      ).then(() => {
+        deleteUser(id).then(res => {
+          // console.log(res);
+          if (res.data.meta.status !== 200) return this.$message.error('删除用户失败')
+          this.$message.success('删除用户成功')
+          this.getUsersList()
+        })
+      }).catch(() => {})
     }
   },
 };
