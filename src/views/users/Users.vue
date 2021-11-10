@@ -159,7 +159,7 @@
       @close="resetRoles"
     >
     <!-- 对话框内容 -->
-      <div>
+      <div class="roleInfo">
         <p>当前用户 ：{{userInfo.username}}</p>
         <p>当前用户的角色 ：{{userInfo.role_name}}</p>
         <p>修改当前用户的角色 ：
@@ -383,6 +383,7 @@ export default {
     // 修改角色事件
     setRolesClick(userInfo) {
       this.userInfo = userInfo
+      // console.log(this.userInfo);
       // 获取所有角色列表
       getRolesList().then(res => {
         // console.log(res);
@@ -395,7 +396,7 @@ export default {
     submitRoles() {
       if(!this.selValue) return this.$message.warning('请选择要修改的角色')
       setRoles(this.userInfo.id, this.selValue).then(res => {
-        console.log(res);
+        // console.log(res);
         if(res.data.meta.status !== 200) return this.$message.error('修改角色失败')
         this.$message.success('修改角色成功')
         this.getUsersList()
@@ -421,5 +422,9 @@ export default {
 }
 .el-pagination {
   margin-top: 15px;
+}
+.roleInfo p {
+  line-height: 40px;
+  font-size: 16px;
 }
 </style>
