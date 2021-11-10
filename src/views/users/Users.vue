@@ -22,7 +22,7 @@
         </el-col>
       </el-row>
       <!-- 列表信息 -->
-      <el-table :data="usersList" border height="69.7vh" highlight-current-row style="width: 100%">
+      <el-table :data="usersList" border stripe height="69.7vh" highlight-current-row style="width: 100%">
         <el-table-column type="index" label="序号" header-align="center" align="center" />
         <el-table-column prop="username" label="姓名" header-align="center" />
         <el-table-column prop="email" label="邮箱" header-align="center" />
@@ -301,7 +301,7 @@ export default {
       this.$refs.editForm.validate((valid) => {
         if (valid) {
           setUserInfo(this.editForm.id, this.editForm.email, this.editForm.mobile).then(res => {
-            console.log(res);
+            // console.log(res);
             if (res.data.meta.status !== 200) {
               return this.$message.error('修改用户信息失败')
             }
