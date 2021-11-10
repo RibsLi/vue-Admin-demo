@@ -42,7 +42,7 @@
             <!-- 删除按钮 -->
             <el-button type="danger" icon="el-icon-delete" size="small" @click="removeClick(handle.row.id)"></el-button>
             <!-- 分配权限按钮 -->
-            <el-button type="warning" icon="el-icon-setting" size="small"></el-button>
+            <el-button type="warning" icon="el-icon-setting" size="small" @click="allotRightsClick(handle.row)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -119,11 +119,31 @@
         </span>
       </template>
     </el-dialog>
+    <!-- 分配权限对话框 -->
+    <el-dialog
+      v-model="setRightsDialog"
+      title="修改权限列表"
+      width="50%"
+      :close-on-click-modal="false"
+      @close="resetDefKeys"
+    >
+    <!-- 对话框内容 树形控件 -->
+       <el-tree :data="rightsList" :props="treeProps" show-checkbox node-key="id" accordion expand-on-click-node :default-checked-keys="defKeys" :default-expanded-keys="[101]" ref="treeRef" />
+      <!-- 对话框底部按钮 -->
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="setRightsDialog = false">取消</el-button>
+          <el-button type="primary" @click="submitRightsForm"
+            >确认</el-button
+          >
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getRolesList, addRoles, getRolesInfo, setRolesInfo, deleteRoles, deleteTag } from "network/rights"
+import { getRolesList, addRoles, getRolesInfo, setRolesInfo, deleteRoles, deleteTag, allRightsList, setRightsList } from "network/rights"
 export default {
   name: "Roles",
   data() {
@@ -136,6 +156,14 @@ export default {
       },
       editForm: {},
       editDialog: false,
+      setRightsDialog: false,
+      rightsList: [],
+      treeProps: {
+        children: 'children',
+        label: 'authName',
+      },
+      defKeys: [],
+      rolesId: '',
       rules: {
         roleName: [
           {
@@ -255,6 +283,44 @@ export default {
           roleId.children = res.data.data
         })
       }).catch(() => {})
+    },
+    // 分配权限事件
+    allotRightsClick(roles) {
+      allRightsList('tree').then(res => {
+        // console.log(res);
+        // 保存当前角色id以便下面权限提交时使用
+        this.rolesId = roles.id
+        if(res.data.meta.status !== 200) return this.$message.error('获取权限列表失败')
+        this.rightsList = res.data.data
+        this.getLeafKeys(roles, this.defKeys)
+        this.setRightsDialog = true
+      })
+    },
+    // 递归函数获取每个三级权限子节点的id存到一个数组中
+    getLeafKeys(node, arr) {
+      if (!node.children) {
+        return arr.push(node.id)
+      }
+      node.children.forEach(item => 
+      this.getLeafKeys(item, arr))
+    },
+    // 分配权限提交事件
+    submitRightsForm() {
+      const keys = [...this.$refs.treeRef.getCheckedKeys(), ...this.$refs.treeRef.getHalfCheckedKeys()]
+      // console.log(keys);
+      const idStr = keys.join(',')
+      // console.log(idStr);
+      setRightsList(this.rolesId, idStr).then(res => {
+        console.log(res);
+        if(res.data.meta.status !== 200) return this.$message.error('修改权限失败')
+        this.$message.success('修改权限成功')
+        this.getRolesList()
+        this.setRightsDialog = false
+      })
+    },
+    // 分配权限的重置事件
+    resetDefKeys() {
+      this.defKeys = []
     }
   },
 }

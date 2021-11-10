@@ -70,3 +70,22 @@ export function deleteTag(roleId, rightId) {
     }
   })
 }
+
+// 所有权限列表
+export function allRightsList(key) {
+  return request({
+    url: `rights/${key}`,
+    method: "get"
+  })
+}
+
+// 提交权限列表
+export function setRightsList(roleid, rids) {
+  return request({
+    url: `roles/${roleid}/rights`,
+    method: "post",
+    data: {
+      rids
+    }
+  })
+}
