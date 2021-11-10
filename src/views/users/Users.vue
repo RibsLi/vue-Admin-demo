@@ -40,8 +40,8 @@
             <el-button type="primary" icon="el-icon-edit" size="small" @click="editClick(handle.row.id)"></el-button>
             <!-- 删除按钮 -->
             <el-button type="danger" icon="el-icon-delete" size="small" @click="removeClick(handle.row.id)"></el-button>
-            <!-- 分配角色按钮 -->
-            <el-button type="warning" icon="el-icon-setting" size="small"></el-button>
+            <!-- 修改角色按钮 -->
+            <el-button type="warning" icon="el-icon-setting" size="small" @click="setRolesClick(handle.row)"></el-button>
             <!-- 设置按钮提示信息 -->
             <!-- <el-tooltip
               effect="dark"
@@ -149,12 +149,50 @@
         </span>
       </template>
     </el-dialog>
+    
+    <!-- 修改角色对话框 -->
+    <el-dialog
+      v-model="setRolesDialog"
+      title="修改角色信息"
+      width="50%"
+      :close-on-click-modal="false"
+      @close="resetRoles"
+    >
+    <!-- 对话框内容 -->
+      <div>
+        <p>当前用户 ：{{userInfo.username}}</p>
+        <p>当前用户的角色 ：{{userInfo.role_name}}</p>
+        <p>修改当前用户的角色 ：
+          <el-select v-model="selValue" filterable clearable placeholder="选择角色">
+            <el-option
+              v-for="item in rolesList"
+              :key="item"
+              :label="item.roleName"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </p>
+      </div>
+      <!-- 对话框底部按钮 -->
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="setRolesDialog = false">取消</el-button>
+          <el-button type="primary" @click="submitRoles"
+            >确认</el-button
+          >
+          <el-button type="warning" @click="resetRoles">
+            重置
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getUsersList, getStateChange, addUser, getUserInfo, setUserInfo, deleteUser } from "network/users"
-
+import { getUsersList, getStateChange, addUser, getUserInfo, setUserInfo, deleteUser, setRoles } from "network/users"
+import { getRolesList } from "network/rights"
 export default {
   name: "Users",
   data() {
@@ -193,6 +231,10 @@ export default {
       },
       editDialog: false,
       editForm: {},
+      setRolesDialog: false,
+      userInfo: {},
+      rolesList: [],
+      selValue: '',
       rules: {
         username: [
           {
@@ -290,7 +332,7 @@ export default {
     // 监听用户编辑按钮的事件
     editClick(id) {
       getUserInfo(id).then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.data.meta.status !== 200) return this.$message.error("获取用户信息失败")
         this.editForm = res.data.data
         this.editDialog = true
@@ -337,6 +379,33 @@ export default {
           this.getUsersList()
         })
       }).catch(() => {})
+    },
+    // 修改角色事件
+    setRolesClick(userInfo) {
+      this.userInfo = userInfo
+      // 获取所有角色列表
+      getRolesList().then(res => {
+        // console.log(res);
+        if (res.data.meta.status !== 200) return this.$message.error('获取角色列表失败')
+        this.rolesList = res.data.data
+        this.setRolesDialog = true
+      })
+    },
+    // 修改角色提交事件
+    submitRoles() {
+      if(!this.selValue) return this.$message.warning('请选择要修改的角色')
+      setRoles(this.userInfo.id, this.selValue).then(res => {
+        console.log(res);
+        if(res.data.meta.status !== 200) return this.$message.error('修改角色失败')
+        this.$message.success('修改角色成功')
+        this.getUsersList()
+        this.setRolesDialog =false
+      })
+    },
+    // 修改角色重置事件
+    resetRoles() {
+      // this.userInfo = {}
+      this.selValue = ''
     }
   },
 };

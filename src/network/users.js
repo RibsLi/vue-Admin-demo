@@ -78,3 +78,14 @@ export function deleteUser(id) {
     }
   })
 }
+
+// 修改用户角色
+export function setRoles(id, rid) {
+  return request({
+    url: `users/${id}/role`,
+    method: "put",
+    data: {
+      rid
+    }
+  })
+}
