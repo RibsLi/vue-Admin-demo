@@ -16,8 +16,8 @@
         <el-table-column prop="cat_name" label="分类名称" header-align="center" />
         <el-table-column prop="cat_deleted" label="是否有效" header-align="center">
           <template v-slot:default="state">
-            <i class="el-icon-circle-check" style="color: lightgreen" v-if="state.row.cat_deleted===false"></i>
-            <i class="el-icon-error" style="color: red" v-else></i>
+            <i class="el-icon-circle-check" style="color: lightgreen; font-size:20px" v-if="state.row.cat_deleted===false"></i>
+            <i class="el-icon-error" style="color: red; font-size:20px" v-else></i>
           </template>
         </el-table-column>
         <el-table-column prop="cat_level" label="分类等级" header-align="center">
@@ -67,8 +67,17 @@
         <el-form-item label="分类名称" prop="cat_name">
           <el-input v-model="addCatForm.cat_name"></el-input>
         </el-form-item>
-        <el-form-item label="父级分类" prop="cat_level">
-          <el-input v-model="addCatForm.cat_level"></el-input>
+        <el-form-item label="父级分类">
+          <el-cascader
+            style="width:100%"
+            v-model="newCat"
+            :options="catList_tow"
+            :props="{ checkStrictly: true, expandTrigger: 'hover', value: 'cat_id', label: 'cat_name', children: 'children'}"
+            placeholder="请选择"
+            clearable
+            filterable
+            @change="addCatChange"
+          ></el-cascader>
         </el-form-item>
       </el-form>
       <!-- 对话框底部按钮 -->
@@ -88,7 +97,7 @@
 </template>
 
 <script>
-import { getCatList } from "network/categories"
+import { getCatList, addCat } from "network/categories"
 
 export default {
   name: "Categories",
@@ -106,6 +115,7 @@ export default {
         cat_level: 0
       },
       catList_tow: [],
+      newCat: [],
       rules: {
         cat_name: [
           {
@@ -150,17 +160,48 @@ export default {
     addCatClick() {
       // 获取所有二级分类数据
       getCatList('2', '', '').then(res => {
-        console.log(res);
+        // console.log(res);
         if(res.data.meta.status !== 200) return this.$message.error('获取分类列表失败')
         this.catList_tow = res.data.data
+        this.addCatDialog = true
       })
-      this.addCatDialog = true
+    },
+    // 添加分类级联选择器节点变化事件
+    addCatChange() {
+      // console.log(this.newCat);
+      if(this.newCat.length > 0) {
+        this.addCatForm.cat_pid = this.newCat[this.newCat.length - 1]
+        this.addCatForm.cat_level = this.newCat.length
+      } else {
+        this.addCatForm.cat_pid = 0
+        this.addCatForm.cat_level = 0
+      }
     },
     // 添加分类提交事件
-    submitAddCatForm() {},
+    submitAddCatForm() {
+      // console.log(this.addCatForm);
+      this.$refs.addCatForm.validate((valid) => {
+        if (valid) {
+          addCat(this.addCatForm.cat_pid, this.addCatForm.cat_name, this.addCatForm.cat_level).then(res => {
+            console.log(res);
+            if (res.data.meta.status !== 201) {
+              return this.$message.error('添加分类失败')
+            }
+            this.addCatDialog = false
+            // 添加成功后重新获取用户数据
+            this.getCatList()
+            this.$message.success('添加分类成功')
+          })
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      })
+    },
     // 添加分类对话框重置事件
     resetAddCatForm() {
       this.$refs.addCatForm.resetFields();
+      this.newCat = []
     },
     editClick() {},
     removeClick() {},
