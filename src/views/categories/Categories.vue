@@ -30,9 +30,9 @@
         <el-table-column label="操作" header-align="center" width="173px">
           <template v-slot:default="handle">
             <!-- 编辑按钮 -->
-            <el-button type="primary" icon="el-icon-edit" size="small" @click="editClick(handle.row.id)"></el-button>
+            <el-button type="primary" icon="el-icon-edit" size="small" @click="editClick(handle.row)"></el-button>
             <!-- 删除按钮 -->
-            <el-button type="danger" icon="el-icon-delete" size="small" @click="removeClick(handle.row.id)"></el-button>
+            <el-button type="danger" icon="el-icon-delete" size="small" @click="removeClick(handle.row.cat_id)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -93,11 +93,44 @@
         </span>
       </template>
     </el-dialog>
+    <!-- 编辑分类对话框 -->
+    <el-dialog
+      v-model="editDialog"
+      title="修改分类"
+      width="50%"
+      :close-on-click-modal="false"
+      @close="resetEditForm"
+    >
+    <!-- 对话框内容 -->
+      <el-form
+        ref="catInfo"
+        :model="catInfo"
+        :rules="rules"
+        label-width="80px"
+        status-icon
+      >
+        <el-form-item label="分类名称" prop="cat_name">
+          <el-input v-model="catInfo.cat_name"></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- 对话框底部按钮 -->
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="editDialog = false">取消</el-button>
+          <el-button type="primary" @click="submitEditForm"
+            >确认</el-button
+          >
+          <el-button type="warning" @click="resetEditForm">
+            重置
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getCatList, addCat } from "network/categories"
+import { getCatList, addCat, getCatInfo, setCat, deleteCat } from "network/categories"
 
 export default {
   name: "Categories",
@@ -116,6 +149,8 @@ export default {
       },
       catList_tow: [],
       newCat: [],
+      catInfo: {},
+      editDialog: false,
       rules: {
         cat_name: [
           {
@@ -203,8 +238,57 @@ export default {
       this.$refs.addCatForm.resetFields();
       this.newCat = []
     },
-    editClick() {},
-    removeClick() {},
+    // 编辑分类点击事件
+    editClick(catInfo) {
+      getCatInfo(catInfo.cat_id).then(res => {
+        console.log(res);
+        if(res.data.meta.status !== 200) return this.$message.error('获取分类信息失败')
+        this.catInfo = res.data.data
+        this.editDialog =true
+      })
+    },
+    // 编辑分类提交请求
+    submitEditForm() {
+      this.$refs.catInfo.validate((valid) => {
+        if (valid) {
+          setCat(this.catInfo.cat_id, this.catInfo.cat_name).then(res => {
+            console.log(res);
+            if (res.data.meta.status !== 200) {
+              return this.$message.error('修改分类失败')
+            }
+            this.editDialog = false
+            // 添加成功后重新获取用户数据
+            this.getCatList()
+            this.$message.success('修改分类成功')
+          })
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      })
+    },
+    // 编辑分类重置事件
+    resetEditForm() {
+      this.$refs.catInfo.resetFields();
+    },
+    // 删除分类
+    removeClick(id) {
+      this.$confirm(
+        '确认删除此分类吗 ？',
+        {
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      ).then(() => {
+        deleteCat(id).then(res => {
+          // console.log(res);
+          if (res.data.meta.status !== 200) return this.$message.error('删除分类失败')
+          this.$message.success('删除分类成功')
+          this.getCatList()
+        })
+      }).catch(() => {})
+    },
   },
 }
 </script>
