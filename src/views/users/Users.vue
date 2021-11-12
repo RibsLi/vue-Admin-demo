@@ -413,16 +413,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.el-breadcrumb {
-  margin-bottom: 15px;
-  font-size: 13px;
-}
-.el-table {
-  margin-top: 15px;
-}
-.el-pagination {
-  margin-top: 15px;
-}
 .roleInfo p {
   line-height: 40px;
   font-size: 16px;

@@ -74,7 +74,6 @@
             :options="catList_tow"
             :props="{ checkStrictly: true, expandTrigger: 'hover', value: 'cat_id', label: 'cat_name', children: 'children'}"
             placeholder="请选择"
-            clearable
             filterable
             @change="addCatChange"
           ></el-cascader>
@@ -218,7 +217,7 @@ export default {
       this.$refs.addCatForm.validate((valid) => {
         if (valid) {
           addCat(this.addCatForm.cat_pid, this.addCatForm.cat_name, this.addCatForm.cat_level).then(res => {
-            console.log(res);
+            // console.log(res);
             if (res.data.meta.status !== 201) {
               return this.$message.error('添加分类失败')
             }
@@ -294,7 +293,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.el-table {
-  margin-top: 15px;
-}
+
 </style>

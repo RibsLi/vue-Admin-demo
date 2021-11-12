@@ -327,13 +327,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.el-table {
-  margin-top: 15px;
-}
-// .el-row {
-//   // padding: 10px;
-//   border-bottom: 1px solid #eee;
-// }
 .line {
   display: flex;
   align-items: center;
