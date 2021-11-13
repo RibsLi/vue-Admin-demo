@@ -11,9 +11,9 @@
       <!-- 搜索框和添加用户 -->
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-input placeholder="请输入搜索内容" v-model="query" clearable @clear="getUsersList" @keyup.enter="getUsersList">
+          <el-input placeholder="请输入搜索内容" v-model="query" clearable @clear="getUsersList" @keyup.enter="searchClick">
             <template #append>
-              <el-button icon="el-icon-search" @click="getUsersList"></el-button>
+              <el-button icon="el-icon-search" @click="searchClick"></el-button>
             </template>
           </el-input>
         </el-col>
@@ -292,6 +292,11 @@ export default {
     // 页码改变时执行的事件
     handleCurrentChange(newPage) {
       this.pagenum = newPage
+      this.getUsersList()
+    },
+    // 判断搜索内容是否为空，若为空则不发起请求
+    searchClick() {
+      if(this.query == '') return this.$message.warning('请输入搜索内容')
       this.getUsersList()
     },
     // 监听用户状态的改变

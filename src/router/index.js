@@ -10,6 +10,7 @@ const Params = () => import("views/params/Params");
 const Categories = () => import("views/categories/Categories");
 const Orders = () => import("views/orders/Orders");
 const Reports = () => import("views/reports/Reports");
+const AddGoods = () => import("views/addGoods/AddGoods")
 
 const routes = [
   {
@@ -32,7 +33,8 @@ const routes = [
       {path: '/params', component: Params},
       {path: '/categories', component: Categories},
       {path: '/orders', component: Orders},
-      {path: '/reports', component: Reports}
+      {path: '/reports', component: Reports},
+      {path: '/addGoods', component: AddGoods}
     ]
   },
 ];
