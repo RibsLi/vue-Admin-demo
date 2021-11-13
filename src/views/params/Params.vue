@@ -32,21 +32,20 @@
             <!-- 参数列表扩展 -->
             <el-table-column type="expand" header-align="center" align="center">
               <template v-slot:default="tag">
-                <el-tag closable v-for="(item, index) in tag.row.attr_vals" :key="index">
+                <el-tag closable v-for="(item, index) in tag.row.attr_vals" :key="index" @close="handleClose(index, tag.row)">
                   {{item}}
                 </el-tag>
                 <el-input
                   style="width: 100px"
-                  v-if="tag.row.inputVisible"
-                  ref="saveTagInput"
-                  v-model="tag.row.inputValue"
                   size="small"
+                  ref="saveTagInput"
+                  v-if="tag.row.inputVisible"
+                  v-model="tag.row.inputValue"
                   @keyup.enter="handleInputConfirm(tag.row)"
                   @blur="handleInputConfirm(tag.row)"
                 >
                 </el-input>
-                <el-button v-else size="small" style="width: 100px" @click="showInput(tag.row)"
-                  >+ 新建标签</el-button
+                <el-button v-else size="small" style="width: 100px; margin-left: 10px" @click="showInput(tag.row)">+ 新建标签</el-button
                 >
               </template>
             </el-table-column>
@@ -220,7 +219,7 @@ export default {
       } else if(this.newCat.length == 3) {
         // 发起请求
           getParams(this.newCat[2], this.activeName).then (res => {
-          console.log(res);
+          // console.log(res);
           if(res.data.meta.status !== 200) return this.$message.error('获取参数数据失败')
           // 循环数据转换成数组以便后面tag使用
           res.data.data.forEach(item => {
@@ -322,21 +321,44 @@ export default {
         })
       }).catch(() => {})
     },
-    handleInputConfirm(vis) {
-      console.log('---');
-      if (vis.inputValue.trim().length === 0) {
-        vis.inputVisible = false;
-        vis.inputValue = '';
+    // 监听input输入框失去焦点事件
+    handleInputConfirm(row) {
+      // console.log(vis);
+      if (row.inputValue.trim().length === 0) {
+        row.inputVisible = false;
+        row.inputValue = '';
         return
       }
-      vis.attr_vals.push(vis.inputValue.trim())
-      vis.inputVisible = false;
-      vis.inputValue = '';
-      
+      row.attr_vals.push(row.inputValue.trim())
+      row.inputVisible = false;
+      row.inputValue = '';
+      setParams(this.newCat[2], row.attr_id, row.attr_name, row.attr_sel, row.attr_vals.join(',')).then(res => {
+        // console.log(res);
+        if (res.data.meta.status !== 200) {
+          return this.$message.error('添加参数失败')
+        }
+        this.getParams()
+        this.$message.success('添加参数成功')
+      })
     },
     // 标签是否显示事件
     showInput(vis) {
       vis.inputVisible = true
+      // this.$nextTick(() => {
+      //   this.$refs.saveTagInput.$refs.input.focus();
+      // });
+    },
+    // 参数标签删除事件
+    handleClose(index, row) {
+      row.attr_vals.splice(index, 1)
+      setParams(this.newCat[2], row.attr_id, row.attr_name, row.attr_sel, row.attr_vals.join(',')).then(res => {
+        // console.log(res);
+        if (res.data.meta.status !== 200) {
+          return this.$message.error('添加参数失败')
+        }
+        this.getParams()
+        this.$message.success('添加参数成功')
+      })
     }
   },
   computed: {
