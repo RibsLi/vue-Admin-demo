@@ -69,9 +69,21 @@
             <!-- 参数列表扩展 -->
             <el-table-column type="expand" header-align="center" align="center">
               <template v-slot:default="tag">
-                <el-tag closable v-for="(item, index) in tag.row.attr_vals" :key="index">
+                <el-tag closable v-for="(item, index) in tag.row.attr_vals" :key="index" @close="handleClose(index, tag.row)">
                   {{item}}
                 </el-tag>
+                <el-input
+                  style="width: 100px"
+                  size="small"
+                  ref="saveTagInput"
+                  v-if="tag.row.inputVisible"
+                  v-model="tag.row.inputValue"
+                  @keyup.enter="handleInputConfirm(tag.row)"
+                  @blur="handleInputConfirm(tag.row)"
+                >
+                </el-input>
+                <el-button v-else size="small" style="width: 100px; margin-left: 10px" @click="showInput(tag.row)">+ 新建标签</el-button
+                >
               </template>
             </el-table-column>
             <el-table-column type="index" label="序号" header-align="center" align="center" />
