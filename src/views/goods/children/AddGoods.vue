@@ -322,7 +322,7 @@ export default {
           addGoods(form.goods_name, form.newCat, form.goods_price, form.goods_number, form.goods_weight, form.goods_introduce, form.pics, form.attrs).then(res => {
             // console.log(res);
             if (res.data.meta.status !== 201) {
-              return this.$message.error('添加商品失败')
+              return this.$message.error('添加商品失败，请检查是否存在相同名称的商品')
             }
             this.$message.success('添加商品成功')
             this.$router.push("/goods");

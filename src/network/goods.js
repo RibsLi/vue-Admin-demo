@@ -18,14 +18,31 @@ export function addGoods(goods_name, goods_cat, goods_price, goods_number, goods
     url: "goods",
     method: "post",
     data: {
-      goods_name, 
-      goods_cat, 
-      goods_price, 
-      goods_number, 
-      goods_weight, 
-      goods_introduce, 
-      pics, 
+      goods_name,
+      goods_cat,
+      goods_price,
+      goods_number,
+      goods_weight,
+      goods_introduce,
+      pics,
       attrs
+    }
+  })
+}
+// 编辑提交商品
+export function setGoods(id, goods_name, goods_price, goods_number, goods_weight, goods_introduce, pics, attrs, goods_cat) {
+  return request({
+    url: `goods/${id}`,
+    method: "put",
+    data: {
+      goods_name,
+      goods_price,
+      goods_number,
+      goods_weight,
+      goods_introduce,
+      pics,
+      attrs,
+      goods_cat
     }
   })
 }
