@@ -12,6 +12,23 @@ export function getGoodsList(query, pagenum, pagesize) {
     }
   })
 }
+//添加商品
+export function addGoods(goods_name, goods_cat, goods_price, goods_number, goods_weight, goods_introduce, pics, attrs) {
+  return request({
+    url: "goods",
+    method: "post",
+    data: {
+      goods_name, 
+      goods_cat, 
+      goods_price, 
+      goods_number, 
+      goods_weight, 
+      goods_introduce, 
+      pics, 
+      attrs
+    }
+  })
+}
 // 根据id查询商品信息
 export function getGoodsInfo(id) {
   return request({

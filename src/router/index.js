@@ -10,7 +10,7 @@ const Params = () => import("views/params/Params");
 const Categories = () => import("views/categories/Categories");
 const Orders = () => import("views/orders/Orders");
 const Reports = () => import("views/reports/Reports");
-const AddGoods = () => import("views/addGoods/AddGoods")
+const AddGoods = () => import("views/goods/children/AddGoods")
 
 const routes = [
   {
