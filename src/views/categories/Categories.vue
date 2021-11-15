@@ -290,7 +290,7 @@ export default {
     // 编辑分类点击事件
     editClick(catInfo) {
       getCatInfo(catInfo.cat_id).then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data.meta.status !== 200)
           return this.$message.error("获取分类信息失败");
         this.catInfo = res.data.data;
@@ -302,7 +302,7 @@ export default {
       this.$refs.catInfo.validate((valid) => {
         if (valid) {
           setCat(this.catInfo.cat_id, this.catInfo.cat_name).then((res) => {
-            console.log(res);
+            // console.log(res);
             if (res.data.meta.status !== 200) {
               return this.$message.error("修改分类失败");
             }

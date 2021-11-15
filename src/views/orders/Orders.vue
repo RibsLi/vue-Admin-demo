@@ -224,7 +224,7 @@ export default {
     // 获取订单列表数据
     getOrdersList() {
       getOrdersList(this.query, this.pagenum, this.pagesize).then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data.meta.status !== 200)
           return this.$message.error("获取订单列表失败");
         this.ordersList = res.data.data.goods;
@@ -274,7 +274,7 @@ export default {
     logisticsClick() {
       this.logisticsDialog = true;
       getLogistics("1106975712662").then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data.meta.status !== 200)
           return this.$message.error("获取物流信息失败");
         this.logisticsInfo = res.data.data;

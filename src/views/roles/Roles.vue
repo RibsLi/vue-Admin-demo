@@ -348,7 +348,7 @@ export default {
       })
         .then(() => {
           deleteTag(roleId.id, rightId).then((res) => {
-            console.log(res);
+            // console.log(res);
             if (res.data.meta.status !== 200)
               return this.$message.error("删除失败");
             this.$message.success("删除成功");
@@ -387,7 +387,7 @@ export default {
       const idStr = keys.join(",");
       // console.log(idStr);
       setRightsList(this.rolesId, idStr).then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data.meta.status !== 200)
           return this.$message.error("修改权限失败");
         this.$message.success("修改权限成功");

@@ -313,7 +313,7 @@ export default {
     // 商品编辑点击事件
     editClick(id) {
       getGoodsInfo(id).then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data.meta.status !== 200)
           return this.$message.error("获取商品信息失败");
         this.editForm = res.data.data;
@@ -335,7 +335,7 @@ export default {
             this.editForm.attrs,
             this.editForm.goods_cat
           ).then((res) => {
-            console.log(res);
+            // console.log(res);
             if (res.data.meta.status !== 200) {
               return this.$message.error("修改商品信息失败");
             }

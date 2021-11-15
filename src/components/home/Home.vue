@@ -5,7 +5,7 @@
       <div class="header-img">
         <img src="~assets/images/logo.png" alt="" @click="headerClick" />
         <span>后台管理系统</span>
-        <el-button
+        <!-- <el-button
           type="primary"
           size="mini"
           icon="el-icon-arrow-left"
@@ -16,7 +16,7 @@
           size="mini"
           icon="el-icon-arrow-right"
           @click="goClick"
-        ></el-button>
+        ></el-button> -->
       </div>
       <el-button type="danger" size="medium" @click="logoutClick"
         >退出</el-button
@@ -53,6 +53,7 @@
               :index="'/' + item.path"
               v-for="(item, index) in item.children"
               :key="index"
+              @click="saveStateClick('/' + item.path)"
             >
               <i class="el-icon-menu"></i>
               <span>{{ item.authName }}</span>
@@ -85,8 +86,18 @@ export default {
         "el-icon-data-line",
       ],
       isToggle: false,
-      isActive: "/users",
+      isActive: "",
     };
+  },
+  created() {
+    this.isActive = window.sessionStorage.getItem('activePath') ? window.sessionStorage.getItem('activePath') : '/users'
+    // 请求菜单列表数据
+    getMenuList().then((res) => {
+      // console.log(res);
+      if (res.data.meta.status !== 200)
+        return this.$message.error(res.data.meta.msg);
+      this.menuList = res.data.data;
+    });
   },
   methods: {
     // 点击头像回到首页
@@ -100,6 +111,9 @@ export default {
     goClick() {
       this.$router.go(1);
       this.isActive = this.$route.path;
+    },
+    saveStateClick(activePath) {
+      window.sessionStorage.setItem('activePath', activePath)
     },
     // 退出事件
     logoutClick() {
@@ -119,22 +133,13 @@ export default {
       this.isToggle = !this.isToggle;
     },
   },
-  created() {
-    // 请求菜单列表数据
-    getMenuList().then((res) => {
-      // console.log(res);
-      if (res.data.meta.status !== 200)
-        return this.$message.error(res.data.meta.msg);
-      this.menuList = res.data.data;
-    });
-  },
 };
 </script>
 
 <style lang="less" scoped>
 .el-container {
   height: 100vh;
-  user-select: none;
+  // user-select: none;
   .el-header {
     display: flex;
     justify-content: space-between;

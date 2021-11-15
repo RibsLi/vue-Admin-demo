@@ -365,7 +365,7 @@ export default {
             this.activeName,
             ""
           ).then((res) => {
-            console.log(res);
+            // console.log(res);
             if (res.data.meta.status !== 201) {
               return this.$message.error("添加参数失败");
             }
