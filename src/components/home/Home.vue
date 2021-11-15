@@ -26,7 +26,12 @@
     <el-container>
       <!-- 侧栏 -->
       <el-aside :width="isToggle ? '64px' : '200px'">
-        <div class="toggle" @click="toggleClick">| | |</div>
+        <div class="toggle" @click="toggleClick">
+          <i class="el-icon-arrow-left"></i>
+          <i class="el-icon-arrow-left"></i>
+          <i class="el-icon-arrow-left"></i>
+        </div>
+        
         <el-menu
           active-text-color="#409eff"
           background-color="#3a3d44"
