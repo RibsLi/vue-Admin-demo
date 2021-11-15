@@ -282,9 +282,7 @@ export default {
       if (this.addGoodsForm.newCat.length == 0) {
         this.$message.warning("请先选择分类");
         this.addGoodsForm.newCat = [];
-      } else if (this.addGoodsForm.newCat.length == 3) {
-        console.log("true");
-      } else {
+      } else if (this.addGoodsForm.newCat.length !== 3) {
         this.$message.warning("只允许选择第三级分类");
         this.addGoodsForm.newCat = [];
       }

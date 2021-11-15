@@ -1,4 +1,7 @@
 import axios from "axios";
+// 请求时展示的进度条插件
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
 
 export default function request(config) {
   const instance = axios.create({
@@ -13,6 +16,7 @@ export default function request(config) {
       // console.log(config);
       // 需要授权的 API ，必须在请求头中使用 `Authorization` 字段提供 `token` 令牌才有权限访问
       config.headers.Authorization = window.sessionStorage.getItem("token");
+      NProgress.start();
       return config;
     },
     (err) => {
@@ -23,6 +27,7 @@ export default function request(config) {
   instance.interceptors.response.use(
     (res) => {
       // console.log(res);
+      NProgress.done()
       return res;
     },
     (err) => {
