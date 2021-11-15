@@ -10,7 +10,7 @@ const Params = () => import("views/params/Params");
 const Categories = () => import("views/categories/Categories");
 const Orders = () => import("views/orders/Orders");
 const Reports = () => import("views/reports/Reports");
-const AddGoods = () => import("views/goods/children/AddGoods")
+const AddGoods = () => import("views/goods/children/AddGoods");
 
 const routes = [
   {
@@ -25,17 +25,17 @@ const routes = [
     path: "/home",
     component: Home,
     children: [
-      {path: '', redirect: '/users'},
-      {path: '/users', component: Users},
-      {path: '/roles', component: Roles},
-      {path: '/rights', component: Rights},
-      {path: '/goods', component: Goods},
-      {path: '/params', component: Params},
-      {path: '/categories', component: Categories},
-      {path: '/orders', component: Orders},
-      {path: '/reports', component: Reports},
-      {path: '/addGoods', component: AddGoods}
-    ]
+      { path: "", redirect: "/users" },
+      { path: "/users", component: Users },
+      { path: "/roles", component: Roles },
+      { path: "/rights", component: Rights },
+      { path: "/goods", component: Goods },
+      { path: "/params", component: Params },
+      { path: "/categories", component: Categories },
+      { path: "/orders", component: Orders },
+      { path: "/reports", component: Reports },
+      { path: "/addGoods", component: AddGoods },
+    ],
   },
 ];
 

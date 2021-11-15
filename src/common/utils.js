@@ -14,7 +14,7 @@ export function formatDate(date, fmt) {
     "d+": date.getDate(),
     "h+": date.getHours(),
     "m+": date.getMinutes(),
-    "s+": date.getSeconds()
+    "s+": date.getSeconds(),
   };
   for (let k in o) {
     if (new RegExp(`(${k})`).test(fmt)) {

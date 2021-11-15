@@ -4,16 +4,16 @@ import request from "./request";
 export function getRightsList(key) {
   return request({
     url: `rights/${key}`,
-    method: "get"
-  })
+    method: "get",
+  });
 }
 
 // 获取角色列表数据
 export function getRolesList() {
   return request({
     url: "roles",
-    method: "get"
-  })
+    method: "get",
+  });
 }
 
 // 添加角色
@@ -23,17 +23,17 @@ export function addRoles(roleName, roleDesc) {
     method: "post",
     data: {
       roleName,
-      roleDesc
-    }
-  })
+      roleDesc,
+    },
+  });
 }
 
 // 根据id获取角色信息
 export function getRolesInfo(id) {
   return request({
     url: `roles/${id}`,
-    method: "get"
-  })
+    method: "get",
+  });
 }
 
 // 修改角色信息
@@ -43,9 +43,9 @@ export function setRolesInfo(id, roleName, roleDesc) {
     method: "put",
     data: {
       roleName,
-      roleDesc
-    }
-  })
+      roleDesc,
+    },
+  });
 }
 
 // 删除角色
@@ -54,9 +54,9 @@ export function deleteRoles(id) {
     url: `roles/${id}`,
     method: "delete",
     params: {
-      id
-    }
-  })
+      id,
+    },
+  });
 }
 
 // 删除角色权限tag
@@ -66,17 +66,17 @@ export function deleteTag(roleId, rightId) {
     method: "delete",
     params: {
       roleId,
-      rightId
-    }
-  })
+      rightId,
+    },
+  });
 }
 
 // 所有权限列表
 export function allRightsList(key) {
   return request({
     url: `rights/${key}`,
-    method: "get"
-  })
+    method: "get",
+  });
 }
 
 // 提交权限列表
@@ -85,7 +85,7 @@ export function setRightsList(roleid, rids) {
     url: `roles/${roleid}/rights`,
     method: "post",
     data: {
-      rids
-    }
-  })
+      rids,
+    },
+  });
 }

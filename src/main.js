@@ -6,7 +6,6 @@ import store from "./store";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 
-
 import "assets/css/main.css";
 
 // import axios from "axios"
@@ -14,7 +13,7 @@ import "assets/css/main.css";
 // 请求拦截获取token
 // axios.interceptors.request.use(config => {
 //   config.headers.Authorization = window.sessionStorage.getItem('token')
-//   return config 
+//   return config
 // })
 
 const app = createApp(App);

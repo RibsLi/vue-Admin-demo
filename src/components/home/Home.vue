@@ -5,15 +5,27 @@
       <div class="header-img">
         <img src="~assets/images/logo.png" alt="" @click="headerClick" />
         <span>后台管理系统</span>
-        <el-button type="primary" size="mini" icon="el-icon-arrow-left" @click="backClick"></el-button>
-        <el-button type="primary" size="mini" icon="el-icon-arrow-right" @click="goClick"></el-button>
+        <el-button
+          type="primary"
+          size="mini"
+          icon="el-icon-arrow-left"
+          @click="backClick"
+        ></el-button>
+        <el-button
+          type="primary"
+          size="mini"
+          icon="el-icon-arrow-right"
+          @click="goClick"
+        ></el-button>
       </div>
-      <el-button type="danger" size="medium" @click="logoutClick">退出</el-button>
+      <el-button type="danger" size="medium" @click="logoutClick"
+        >退出</el-button
+      >
     </el-header>
 
     <el-container>
       <!-- 侧栏 -->
-      <el-aside :width="isToggle? '64px' : '200px'">
+      <el-aside :width="isToggle ? '64px' : '200px'">
         <div class="toggle" @click="toggleClick">| | |</div>
         <el-menu
           active-text-color="#409eff"
@@ -23,7 +35,7 @@
           :collapse="isToggle"
           :collapse-transition="false"
           router
-          :default-active= "isActive"
+          :default-active="isActive"
         >
           <!-- 一级菜单 -->
           <el-sub-menu
@@ -51,7 +63,7 @@
 
       <!-- main -->
       <el-main>
-        <router-view/>
+        <router-view />
       </el-main>
     </el-container>
   </el-container>
@@ -65,42 +77,47 @@ export default {
   data() {
     return {
       menuList: [],
-      icon: ['el-icon-user-solid', 'el-icon-connection', 'el-icon-goods', 'el-icon-s-order', 'el-icon-data-line'],
+      icon: [
+        "el-icon-user-solid",
+        "el-icon-connection",
+        "el-icon-goods",
+        "el-icon-s-order",
+        "el-icon-data-line",
+      ],
       isToggle: false,
-      isActive: "/users"
+      isActive: "/users",
     };
   },
   methods: {
     // 点击头像回到首页
     headerClick() {
-      this.$router.push('/users')
+      this.$router.push("/users");
     },
     backClick() {
-      this.$router.back()
-      this.isActive = this.$route.path
+      this.$router.back();
+      this.isActive = this.$route.path;
     },
     goClick() {
-      this.$router.go(1)
-      this.isActive = this.$route.path
+      this.$router.go(1);
+      this.isActive = this.$route.path;
     },
     // 退出事件
     logoutClick() {
-      this.$confirm(
-        '真的要走了吗 ？',
-        {
-          confirmButtonText: '狠心离开',
-          cancelButtonText: '再留一会',
-          type: 'warning',
-        }
-      ).then(() => {
-        window.sessionStorage.clear();
-        this.$router.push("/login");
-      }).catch(() => {})
+      this.$confirm("真的要走了吗 ？", {
+        confirmButtonText: "狠心离开",
+        cancelButtonText: "再留一会",
+        type: "warning",
+      })
+        .then(() => {
+          window.sessionStorage.clear();
+          this.$router.push("/login");
+        })
+        .catch(() => {});
     },
     // 折叠菜单栏
     toggleClick() {
-      this.isToggle = !this.isToggle
-    }
+      this.isToggle = !this.isToggle;
+    },
   },
   created() {
     // 请求菜单列表数据

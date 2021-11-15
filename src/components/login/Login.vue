@@ -111,16 +111,17 @@ export default {
             (res) => {
               // console.log(res);
               const status = res.data.meta.status;
-              if (status !== 200) return this.$message({
-                message: "登陆失败",
-                type: "error",
-                duration: 1000
-              });;
+              if (status !== 200)
+                return this.$message({
+                  message: "登陆失败",
+                  type: "error",
+                  duration: 1000,
+                });
               // this.$message.success("登陆成功");
               this.$message({
                 message: "登陆成功",
                 type: "success",
-                duration: 1000
+                duration: 1000,
               });
 
               // 保存token到window.sessionStorage中

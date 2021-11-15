@@ -8,9 +8,9 @@ export function getCatList(type, pagenum, pagesize) {
     params: {
       type,
       pagenum,
-      pagesize
-    }
-  })
+      pagesize,
+    },
+  });
 }
 
 // 添加分类请求
@@ -21,16 +21,16 @@ export function addCat(cat_pid, cat_name, cat_level) {
     data: {
       cat_pid,
       cat_name,
-      cat_level
-    }
-  })
+      cat_level,
+    },
+  });
 }
 // 根据id获取分类信息
 export function getCatInfo(id) {
   return request({
     url: `categories/${id}`,
-    method: "get"
-  })
+    method: "get",
+  });
 }
 // 编辑分类提交请求
 export function setCat(id, cat_name) {
@@ -38,14 +38,14 @@ export function setCat(id, cat_name) {
     url: `categories/${id}`,
     method: "put",
     data: {
-      cat_name
-    }
-  })
+      cat_name,
+    },
+  });
 }
 // 删除分类请求
 export function deleteCat(id) {
   return request({
     url: `categories/${id}`,
-    method: "delete"
-  })
+    method: "delete",
+  });
 }

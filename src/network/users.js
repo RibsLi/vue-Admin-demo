@@ -4,7 +4,7 @@ import request from "./request";
 export function getMenuList() {
   return request({
     url: "menus",
-    method: "get"
+    method: "get",
   });
 }
 
@@ -16,9 +16,9 @@ export function getUsersList(query, pagenum, pagesize) {
     params: {
       query,
       pagenum,
-      pagesize
-    }
-  })
+      pagesize,
+    },
+  });
 }
 
 // 请求用户状态的修改
@@ -31,7 +31,7 @@ export function getStateChange(userInfo) {
     //   uid,
     //   type
     // }
-  })
+  });
 }
 
 // 添加用户请求
@@ -40,20 +40,20 @@ export function addUser(username, password, email, mobile) {
     url: "users",
     method: "post",
     data: {
-      username, 
-      password, 
-      email, 
-      mobile
-    }
-  })
+      username,
+      password,
+      email,
+      mobile,
+    },
+  });
 }
 
 // 根据id获取用户信息
 export function getUserInfo(id) {
   return request({
     url: `users/${id}`,
-    method: "get"
-  })
+    method: "get",
+  });
 }
 
 // 修改用户信息
@@ -62,10 +62,10 @@ export function setUserInfo(id, email, mobile) {
     url: `users/${id}`,
     method: "put",
     data: {
-      email, 
-      mobile
-    }
-  })
+      email,
+      mobile,
+    },
+  });
 }
 
 // 删除用户请求
@@ -74,9 +74,9 @@ export function deleteUser(id) {
     url: `users/${id}`,
     method: "delete",
     params: {
-      id
-    }
-  })
+      id,
+    },
+  });
 }
 
 // 修改用户角色
@@ -85,7 +85,7 @@ export function setRoles(id, rid) {
     url: `users/${id}/role`,
     method: "put",
     data: {
-      rid
-    }
-  })
+      rid,
+    },
+  });
 }
