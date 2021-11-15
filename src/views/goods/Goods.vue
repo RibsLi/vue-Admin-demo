@@ -161,8 +161,8 @@ export default {
           },
           {
             min: 2,
-            max: 50,
-            message: "商品名称为2至50个字符",
+            max: 100,
+            message: "商品名称为2至100个字符",
             trigger: "blur",
           },
         ],
