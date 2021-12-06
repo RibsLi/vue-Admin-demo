@@ -24,7 +24,7 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### 主要功能预览
-    ### 预览链接：	www.istage.xyz
+  ### 预览链接：	www.istage.xyz
 ![1](https://user-images.githubusercontent.com/90769279/144639496-88aaa763-0101-492a-976c-e5380133ab74.png)
 
 ![2](https://user-images.githubusercontent.com/90769279/144639499-da0e9867-80a9-4ca7-9580-78b47b0dae4b.png)
