@@ -1,28 +1,3 @@
-# vue-admin2.0
-
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
 ### 主要功能预览
   ### 预览链接：	www.istage.xyz
 ![1](https://user-images.githubusercontent.com/90769279/144639496-88aaa763-0101-492a-976c-e5380133ab74.png)
